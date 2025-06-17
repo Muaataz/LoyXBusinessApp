@@ -1,0 +1,40 @@
+actions:
+  - action_type: TAP
+    view_matcher:
+      resource_name: "com.yourapp.package:id/nextButton"
+
+  - action_type: ENTER_TEXT
+    view_matcher:
+      resource_name: "com.yourapp.package:id/mobileNumber"
+    input: "111111111"
+
+  - action_type: TAP
+    view_matcher:
+      resource_name: "com.yourapp.package:id/phoneNumberNextButton"
+
+  - action_type: ENTER_TEXT
+    view_matcher:
+      resource_name: "com.yourapp.package:id/mobileNumberOTP"
+    input: "1111"
+
+  - action_type: ENTER_TEXT
+    view_matcher:
+      resource_name: "com.yourapp.package:id/emailAddress"
+    input: "test@yopmail.com"
+
+  - action_type: TAP
+    view_matcher:
+      resource_name: "com.yourapp.package:id/emailNextButton"
+
+  - action_type: ENTER_TEXT
+    view_matcher:
+      resource_name: "com.yourapp.package:id/emailOTP"
+    input: "1111"
+
+  - action_type: TAP
+    view_matcher:
+      resource_name: "com.yourapp.package:id/welcomeNextButton"
+
+  - action_type: TAP
+    view_matcher:
+      resource_name: "com.yourapp.package:id/acceptRequestButton"

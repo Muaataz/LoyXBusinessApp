@@ -1,0 +1,90 @@
+[
+    {
+      "eventType": "WAIT_FOR_ELEMENT",
+      "timeoutMillis": 2000,
+      "elementDescriptors": [
+        {
+          "resourceId": "com.yourapp.package:id/mobileNumber"
+        }
+      ]
+    },
+    {
+      "eventType": "VIEW_TEXT_CHANGED",
+      "replacementText": "111111111",
+      "elementDescriptors": [
+        {
+          "resourceId": "com.yourapp.package:id/mobileNumber"
+        }
+      ]
+    },
+    {
+      "eventType": "WAIT_FOR_ELEMENT",
+      "timeoutMillis": 2000,
+      "elementDescriptors": [
+        {
+          "resourceId": "com.yourapp.package:id/phoneNumberNextButton"
+        }
+      ]
+    },
+    {
+      "eventType": "VIEW_CLICKED",
+      "elementDescriptors": [
+        {
+          "resourceId": "com.yourapp.package:id/phoneNumberNextButton"
+        }
+      ]
+    },
+    {
+      "eventType": "WAIT_FOR_ELEMENT",
+      "timeoutMillis": 2000,
+      "elementDescriptors": [
+        {
+          "resourceId": "com.yourapp.package:id/mobileNumberOTP"
+        }
+      ]
+    },
+    {
+      "eventType": "VIEW_TEXT_CHANGED",
+      "replacementText": "1111",
+      "elementDescriptors": [
+        {
+          "resourceId": "com.yourapp.package:id/mobileNumberOTP"
+        }
+      ]
+    },
+    {
+      "eventType": "WAIT_FOR_ELEMENT",
+      "timeoutMillis": 2000,
+      "elementDescriptors": [
+        {
+          "resourceId": "com.yourapp.package:id/emailAddress"
+        }
+      ]
+    },
+    {
+      "eventType": "VIEW_TEXT_CHANGED",
+      "replacementText": "test@yopmail.com",
+      "elementDescriptors": [
+        {
+          "resourceId": "com.yourapp.package:id/emailAddress"
+        }
+      ]
+    },
+    {
+      "eventType": "WAIT_FOR_ELEMENT",
+      "timeoutMillis": 2000,
+      "elementDescriptors": [
+        {
+          "resourceId": "com.yourapp.package:id/emailNextButton"
+        }
+      ]
+    },
+    {
+      "eventType": "VIEW_CLICKED",
+      "elementDescriptors": [
+        {
+          "resourceId": "com.yourapp.package:id/emailNextButton"
+        }
+      ]
+    }
+  ]

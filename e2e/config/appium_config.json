@@ -1,0 +1,7 @@
+{
+    "platformName": "Android",
+    "platformVersion": "11.0",
+    "deviceName": "Pixel_3a_API_30_AOSP",
+    "app": "../../android/app/release/app-release.apk",
+    "automationName": "UiAutomator2"
+  }
