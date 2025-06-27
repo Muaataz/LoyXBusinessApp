@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Dimensions} from 'react-native';
 import Svg, {
+  Circle,
   ClipPath,
   Defs,
   G,
@@ -700,7 +701,6 @@ export const RightArrow = (props: any) => {
   );
 };
 
-
 export const HeartIcon = (props: any) => {
   return (
     <Svg
@@ -1255,6 +1255,30 @@ export const PlusIcon = (props?: any) => (
       d="M7.857.012v14.494M15.11 7.254H.614"
       stroke="#222"
       strokeWidth={3}
+    />
+  </Svg>
+);
+
+export const RibIcon = (props: any) => (
+  <Svg
+    width={13}
+    height={15}
+    viewBox="0 0 13 15"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Circle
+      cx={6.63626}
+      cy={6.03079}
+      r={5.10779}
+      stroke="#636163"
+      strokeWidth={1.2}
+    />
+    <Path
+      d="M3.28 5.5s-.017-.794 1.045-1.856C5.389 2.579 6.219 2.56 6.219 2.56M8.703 12.286s-.55.574-2.051.574c-1.506 0-2.105-.574-2.105-.574M7.923 13.915s-.186.45-1.276.45c-1.091 0-1.251-.444-1.251-.444"
+      stroke="#636163"
+      strokeWidth={1.03248}
+      strokeLinecap="round"
     />
   </Svg>
 );

@@ -105,7 +105,7 @@ const ScanBrandQR = ({navigation}: any) => {
   };
 
   const [scannedCode, setScannedCode] = useState<string | null>(
-    __DEV__ ? '43f2d852-b5c0-4feb-8085-dbe7ea1bbecf' : null,
+    __DEV__ ? '8c2c8e62-7f59-4e9e-bfc4-78a63150a3be' : null,
   );
 
   // console.log('scannedCode - ',scannedCode);

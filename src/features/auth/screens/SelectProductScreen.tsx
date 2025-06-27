@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
+  TextInput,
 } from 'react-native';
 import {
   CrossIcon,
   DownArrow,
+  SearchIcon,
   UpArrow,
 } from '../../../shared/components/SvgIcon';
 import {RFValue} from 'react-native-responsive-fontsize';
@@ -66,6 +68,7 @@ export default function SelectProductScreen({navigation, route}: any) {
   );
 
   const [data, setData] = useState<any>();
+  const [search, setSearch] = useState<string>('');
   const [selectedProductId, setSelectedProductId] = useState<any>(null);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -101,6 +104,27 @@ export default function SelectProductScreen({navigation, route}: any) {
     return Object.values(categoryMap);
   };
 
+  const searchProductsByName = (data1: any, searchText: string) => {
+    const lowerCaseSearch = searchText.toLowerCase();
+
+    return data1
+      ?.map((item: any) => {
+        const matchedProducts = item.products.filter((product: any) =>
+          product.name.toLowerCase().includes(lowerCaseSearch),
+        );
+
+        if (matchedProducts.length > 0) {
+          return {
+            ...item,
+            products: matchedProducts,
+          };
+        }
+
+        return null;
+      })
+      .filter(Boolean); // remove nulls
+  };
+
   const getData = async () => {
     try {
       const response = await getProductList();
@@ -108,6 +132,8 @@ export default function SelectProductScreen({navigation, route}: any) {
 
       if (!!response) {
         const dataSet = transformData(response);
+        console.log('dataSet - ', JSON.stringify(dataSet));
+
         setData(dataSet);
       } else {
       }
@@ -140,9 +166,49 @@ export default function SelectProductScreen({navigation, route}: any) {
           <CrossIcon />
         </TouchableOpacity>
       </View>
+      <View
+        style={{
+          height: 60,
+          borderWidth: 1,
+          marginHorizontal: 16,
+          marginBottom: 10,
+          borderColor: '#F1F1F1',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          borderRadius: 50,
+          paddingHorizontal: 20,
+          shadowColor: 'rgba(0,0,0,0.08)',
+          shadowOffset: {
+            width: 0,
+            height: 0,
+          },
+          shadowOpacity: 0.08,
+          shadowRadius: 24,
+
+          elevation: 5,
+        }}>
+        <SearchIcon />
+        <TextInput
+          placeholder="Sök"
+          value={search}
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={setSearch}
+          style={{
+            flex: 1,
+            height: 60,
+            paddingHorizontal: 8,
+            ...Typography.CustomText,
+            fontSize: 14,
+            fontWeight: '400',
+            color: '#222',
+          }}
+        />
+      </View>
       <View style={{paddingHorizontal: 16, flex: 1}}>
         <FlatList
-          data={data}
+          data={!!search ? searchProductsByName(data, search) : data}
           bounces={false}
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
@@ -164,10 +230,14 @@ export default function SelectProductScreen({navigation, route}: any) {
                 ]}
                 onPress={() => toggleExpand(item.id)}>
                 <Text style={styles.categoryTitle}>{item.name}</Text>
-                {expandedCategoryId === item.id ? <UpArrow /> : <DownArrow />}
+                {expandedCategoryId === item.id || !!search ? (
+                  <UpArrow />
+                ) : (
+                  <DownArrow />
+                )}
               </TouchableOpacity>
 
-              {expandedCategoryId === item.id &&
+              {(expandedCategoryId === item.id || !!search) &&
                 item.products.map(product => (
                   <TouchableOpacity
                     key={product.id}

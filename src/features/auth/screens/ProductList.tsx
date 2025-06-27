@@ -112,7 +112,7 @@ export default function PurchaseScreen(props) {
                 product: {
                   name: item.name,
                   price: item?.price?.value,
-                  currency:item?.price?.currency,
+                  currency: item?.price?.currency,
                   id: item.id,
                 },
                 discount: item?.discount,
@@ -132,7 +132,9 @@ export default function PurchaseScreen(props) {
             <DeleteIcon />
           </TouchableOpacity>
         </View>
-        <Text style={styles.discount}>{item.discount} kr rabatt</Text>
+        {parseFloat(item.discount) > 0 && (
+          <Text style={styles.discount}>Rabatt: {item.discount} kr</Text>
+        )}
       </View>
     </View>
   );
@@ -353,7 +355,7 @@ const styles = StyleSheet.create({
   discount: {
     ...Typography.CustomText,
     fontWeight: '500',
-    color: 'rgba(34,34,34,0.8)',
+    color: '#E05A2A',
     fontSize: RFValue(14, 850),
   },
   divider: {
