@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,9 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
 import {
   CrossIcon,
@@ -39,17 +42,23 @@ export default function ProductModal({
   const [discount, setDiscount] = useState(product?.discount || '0');
   const [percentage, setPercentage] = useState<any>(0);
   const [finalAmount, setFinalAmount] = useState<any>(0);
-
+  const [isDiscountFocus, setDiscountFocus] = useState<boolean>(false);
+   const [isFinalPriceFocus, setFinalPriceFocus] = useState<boolean>(false);
+    const [isPercentageFocus, setPercentageFocus] = useState<boolean>(false);
   useEffect(() => {
+    setQuantity(product?.quantity || 1);
+    setDiscount(product?.discount || '0');
+    // setTimeout(() => {
     if (product?.discount) {
-      updateValue(product?.discount, 'discountAmount');
+      updateValue(product?.discount, 'discountAmount', product?.quantity || 1);
     } else {
-      // updateValue(0, 'discountAmount');
+      updateValue(0, 'discountAmount', product?.quantity || 1);
     }
+    // }, 1000);
   }, [product]);
 
-  const updateValue = (value: any, type: any) => {
-    const qty = quantity;
+  const updateValue = (value: any, type: any, updatedQuantity = undefined) => {
+    const qty = updatedQuantity || quantity;
     const productPrice = product.product.price;
     const total = productPrice * qty;
     if (type == 'percentage') {
@@ -75,7 +84,7 @@ export default function ProductModal({
       setDiscount(formatNumber(perValue));
       setFinalAmount(formatNumber(updatedTotal - perValue));
     } else if (type == 'qtyMinus') {
-      const updatedQty = parseInt(quantity) < 2 ? 1 : parseInt(quantity) - 1;
+      const updatedQty = parseInt(qty) < 2 ? 1 : parseInt(qty) - 1;
       const updatedTotal = productPrice * updatedQty;
       setQuantity(formatNumber(updatedQty));
       const perValue = (updatedTotal * percentage) / 100;
@@ -94,240 +103,294 @@ export default function ProductModal({
       animationType="fade"
       transparent
       onRequestClose={onClose}>
-      <TouchableWithoutFeedback onPress={onClose}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}>
         <View style={styles.backdrop}>
-          <TouchableWithoutFeedback>
-            {/* <KeyboardAvoidingView
-              behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-              style={styles.modalContainer}> */}
-            <View style={styles.modal}>
-              {/* Header */}
-              <View style={styles.headerRow}>
-                <Text style={styles.headerText}></Text>
-                <TouchableOpacity style={{padding: 10}} onPress={onClose}>
-                  <CrossIcon />
-                  {/* <Icon name="close" size={24} /> */}
-                </TouchableOpacity>
-              </View>
-
-              {/* Product Info */}
-              <View style={styles.productRow}>
-                <View style={{flex: 1}}>
-                  <Text style={styles.productName}>{product.product.name}</Text>
-                  <Text style={styles.productCategory}>{product.category}</Text>
+          <View
+            onTouchStart={() => {
+              onClose(); // ✅ Close modal on outside tap
+            }}
+            style={{
+              position: 'absolute',
+              backgroundColor: 'tran',
+              width: Dimensions.get('screen').width,
+              height: Dimensions.get('screen').height,
+            }}
+          />
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.modalContainer}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <ScrollView
+                contentContainerStyle={styles.modal}
+                keyboardShouldPersistTaps="handled">
+                {/* Header */}
+                <View style={styles.headerRow}>
+                  <Text style={styles.headerText}></Text>
+                  <TouchableOpacity style={{padding: 10}} onPress={onClose}>
+                    <CrossIcon />
+                    {/* <Icon name="close" size={24} /> */}
+                  </TouchableOpacity>
                 </View>
-                <Text style={styles.productPrice}>
-                  {product.product.price} {product.product.currency}
-                </Text>
-              </View>
 
-              <View style={styles.qtyRow}>
-                <TouchableOpacity style={styles.qtyButton} onPress={decrease}>
-                  <MinusIcon />
-                </TouchableOpacity>
-                <View style={[styles.qtyInputRow]}>
-                  <TextInput
-                    style={[
-                      styles.input,
-                      {fontSize: RFValue(22, 850), paddingVertical: 0},
-                    ]}
-                    editable={false}
-                    value={quantity.toString()}
-                  />
+                {/* Product Info */}
+                <View style={styles.productRow}>
+                  <View style={{flex: 1}}>
+                    <Text style={styles.productName}>
+                      {product.product.name}
+                    </Text>
+                    <Text style={styles.productCategory}>
+                      {product.category}
+                    </Text>
+                  </View>
+                  <Text style={styles.productPrice}>
+                    {product.product.price} {product.product.currency}
+                  </Text>
                 </View>
-                {/* <View style={{flex: 1}} /> */}
 
-                <TouchableOpacity style={styles.qtyButton} onPress={increase}>
-                  <PlusIcon />
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  backgroundColor: '#F5F5F7',
-                  marginTop: 11,
-                  padding: 16,
-                  borderRadius: 20,
-                }}>
-                {/* Rabatt */}
+                <View style={styles.qtyRow}>
+                  <TouchableOpacity style={styles.qtyButton} onPress={decrease}>
+                    <MinusIcon />
+                  </TouchableOpacity>
+                  <View style={[styles.qtyInputRow]}>
+                    <TextInput
+                      style={[
+                        styles.input,
+                        {fontSize: RFValue(22, 850), paddingVertical: 0},
+                      ]}
+                      editable={false}
+                      value={quantity.toString()}
+                    />
+                  </View>
+                  {/* <View style={{flex: 1}} /> */}
+
+                  <TouchableOpacity style={styles.qtyButton} onPress={increase}>
+                    <PlusIcon />
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    backgroundColor: '#F5F5F7',
+                    marginTop: 11,
+                    padding: 16,
+                    borderRadius: 20,
+                  }}>
+                  {/* Rabatt */}
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: 29,
+                    }}>
+                    <Text style={[styles.label, {flex: 1}]}>Rabatt</Text>
+                    <RibIcon />
+                    <Text
+                      style={{
+                        ...Typography.CustomText,
+                        fontSize: 14,
+                        color: '#636163',
+                        fontWeight: '500',
+                        marginLeft: 4,
+                      }}>
+                      Fyll i ett av dem
+                    </Text>
+                  </View>
+                  <Text style={styles.inputTitle}>Pris efter rabatt</Text>
+                  <View style={styles.inputRow}>
+                    <TextInput
+                      style={styles.input}
+                      keyboardType="number-pad"
+                      value={`${!finalAmount || finalAmount == '0' ? '' : finalAmount}`}
+                      placeholder={isFinalPriceFocus?'':"0"}
+                      onFocus={()=>{
+                        setFinalPriceFocus(true)
+                      }}
+                      onChangeText={(txt: string) => {
+                        if (txt && txt?.[0] == '0') {
+                          setFinalAmount(txt?.replace('0', ''));
+                        } else {
+                          setFinalAmount(txt);
+                        }
+                      }}
+                      returnKeyType="done"
+                      placeholderTextColor={'#222'}
+                      onBlur={event => {
+                         setFinalPriceFocus(false)
+                        const txt = event.nativeEvent.text;
+                        // if (parseFloat(txt) > 100) {
+                        // } else {
+                        updateValue(txt ? parseFloat(txt) : 0, 'finalAmount');
+                        // }
+                      }}
+                    />
+                    <Text style={styles.unit}>kr</Text>
+                  </View>
+
+                  <Text style={[styles.inputTitle, {marginTop: 19}]}>
+                    Rabatt i kronor
+                  </Text>
+                  <View style={styles.inputRow}>
+                    <TextInput
+                      style={styles.input}
+                      keyboardType="number-pad"
+                      value={`${!discount || discount == '0' ? '' : discount}`}
+                      placeholder={isDiscountFocus ? '' : '0'}
+                      onFocus={() => {
+                        setDiscountFocus(true);
+                      }}
+                      returnKeyType="done"
+                      placeholderTextColor={'#222'}
+                      onChangeText={(txt: string) => {
+                        if (txt && txt?.[0] == '0') {
+                          setDiscount(txt?.replace('0', ''));
+                        } else {
+                          setDiscount(txt);
+                        }
+                      }}
+                      onBlur={event => {
+                        setDiscountFocus(false);
+                        const txt = event.nativeEvent.text;
+                        // if (parseFloat(txt) > 100) {
+                        // } else {
+                        updateValue(
+                          txt ? parseFloat(txt) : 0,
+                          'discountAmount',
+                        );
+                        // }
+                      }}
+                    />
+                    <Text style={styles.unit}>kr</Text>
+                  </View>
+                  {parseFloat(discount) >
+                    parseFloat(product?.product?.price * quantity) && (
+                    <Text style={styles.errText}>
+                      Rabatten kan inte vara större än priset.
+                    </Text>
+                  )}
+                  {parseFloat(discount) < 0 && (
+                    <Text style={styles.errText}>
+                      Rabatten kan inte vara större än priset.
+                    </Text>
+                  )}
+                  <Text style={[styles.inputTitle, {marginTop: 19}]}>
+                    Rabatt i %
+                  </Text>
+                  <View style={styles.inputRow}>
+                    <TextInput
+                      style={styles.input}
+                       onFocus={() => {
+                        setPercentageFocus(true);
+                      }}
+                      keyboardType="number-pad"
+                      value={`${!percentage || percentage == '0' ? '' : percentage}`}
+                      onChangeText={(txt: string) => {
+                        if (txt && txt?.[0] == '0') {
+                          setPercentage(txt?.replace('0', ''));
+                        } else {
+                          setPercentage(txt);
+                        }
+                      }}
+                      placeholder={isPercentageFocus ? '' : '0'}
+                      returnKeyType="done"
+                      placeholderTextColor={'#222'}
+                      onBlur={event => {
+                          setPercentageFocus(false);
+                        const txt = event.nativeEvent.text;
+                        if (parseFloat(txt) > 100) {
+                          updateValue(100, 'percentage');
+                        } else {
+                          updateValue(txt ? parseFloat(txt) : 0, 'percentage');
+                        }
+                      }}
+                    />
+                    <Text style={styles.unit}>kr</Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    marginTop: 18,
+                    marginBottom: 21,
+                    height: 1,
+                    width: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.1)',
+                  }}
+                />
                 <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginBottom: 29,
                   }}>
-                  <Text style={[styles.label, {flex: 1}]}>Rabatt</Text>
-                  <RibIcon />
                   <Text
                     style={{
                       ...Typography.CustomText,
-                      fontSize: 14,
-                      color: '#636163',
-                      fontWeight: '500',
-                      marginLeft: 4,
+                      fontSize: 22,
+                      fontWeight: '600',
+                      color: '#222',
                     }}>
-                    Fyll i en av dem
+                    Total:
+                  </Text>
+                  <Text
+                    style={{
+                      ...Typography.CustomText,
+                      fontSize: 22,
+                      fontWeight: '600',
+                      color: '#222',
+                    }}>
+                    {finalAmount} kr
                   </Text>
                 </View>
-                <Text style={styles.inputTitle}>Pris efter rabatt</Text>
-                <View style={styles.inputRow}>
-                  <TextInput
-                    style={styles.input}
-                    keyboardType="number-pad"
-                    value={`${finalAmount}`}
-                    placeholder="0"
-                    onChangeText={setFinalAmount}
-                    returnKeyType="done"
-                    placeholderTextColor={'#222'}
-                    onBlur={event => {
-                      const txt = event.nativeEvent.text;
-                      // if (parseFloat(txt) > 100) {
-                      // } else {
-                      updateValue(txt ? parseFloat(txt) : 0, 'finalAmount');
-                      // }
-                    }}
-                  />
-                  <Text style={styles.unit}>kr</Text>
-                </View>
-
-                <Text style={[styles.inputTitle, {marginTop: 19}]}>
-                  Rabatt i kronor
-                </Text>
-                <View style={styles.inputRow}>
-                  <TextInput
-                    style={styles.input}
-                    keyboardType="number-pad"
-                    value={`${discount}`}
-                    placeholder="0"
-                    returnKeyType="done"
-                    placeholderTextColor={'#222'}
-                    onChangeText={setDiscount}
-                    onBlur={event => {
-                      const txt = event.nativeEvent.text;
-                      // if (parseFloat(txt) > 100) {
-                      // } else {
-                      updateValue(txt ? parseFloat(txt) : 0, 'discountAmount');
-                      // }
-                    }}
-                  />
-                  <Text style={styles.unit}>kr</Text>
-                </View>
-                {parseFloat(discount) >
-                  parseFloat(product?.product?.price * quantity) && (
-                  <Text style={styles.errText}>
-                    Rabatten kan inte vara större än priset.
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: 13,
+                  }}>
+                  <Text
+                    style={{
+                      ...Typography.CustomText,
+                      fontSize: 16,
+                      fontWeight: '500',
+                      color: parseFloat(discount) > 0 ? '#E05A2A' : '#909090',
+                    }}>
+                    Rabatt:
                   </Text>
-                )}
-                {parseFloat(discount) < 0 && (
-                  <Text style={styles.errText}>
-                    Rabatten kan inte vara större än priset.
+                  <Text
+                    style={{
+                      ...Typography.CustomText,
+                      fontSize: 16,
+                      fontWeight: '500',
+                      color: parseFloat(discount) > 0 ? '#E05A2A' : '#909090',
+                    }}>
+                    {discount} kr
                   </Text>
-                )}
-                <Text style={[styles.inputTitle, {marginTop: 19}]}>
-                  Rabatt i %
-                </Text>
-                <View style={styles.inputRow}>
-                  <TextInput
-                    style={styles.input}
-                    keyboardType="number-pad"
-                    value={`${percentage}`}
-                    onChangeText={setPercentage}
-                    placeholder="0"
-                    returnKeyType="done"
-                    placeholderTextColor={'#222'}
-                    onBlur={event => {
-                      const txt = event.nativeEvent.text;
-                      if (parseFloat(txt) > 100) {
-                        updateValue(100, 'percentage');
-                      } else {
-                        updateValue(txt ? parseFloat(txt) : 0, 'percentage');
-                      }
-                    }}
-                  />
-                  <Text style={styles.unit}>kr</Text>
                 </View>
-              </View>
-              <View
-                style={{
-                  marginTop: 18,
-                  marginBottom: 21,
-                  height: 1,
-                  width: '100%',
-                  backgroundColor: 'rgba(0,0,0,0.1)',
-                }}
-              />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    ...Typography.CustomText,
-                    fontSize: 22,
-                    fontWeight: '600',
-                    color: '#222',
-                  }}>
-                  Total:
-                </Text>
-                <Text
-                  style={{
-                    ...Typography.CustomText,
-                    fontSize: 22,
-                    fontWeight: '600',
-                    color: '#222',
-                  }}>
-                  {finalAmount} kr
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: 13,
-                }}>
-                <Text
-                  style={{
-                    ...Typography.CustomText,
-                    fontSize: 16,
-                    fontWeight: '500',
-                    color: parseFloat(discount) > 0 ? '#E05A2A' : '#909090',
-                  }}>
-                  Rabatt:
-                </Text>
-                <Text
-                  style={{
-                    ...Typography.CustomText,
-                    fontSize: 16,
-                    fontWeight: '500',
-                    color: parseFloat(discount) > 0 ? '#E05A2A' : '#909090',
-                  }}>
-                  {discount} kr
-                </Text>
-              </View>
-              {/* Add Button */}
-              <TouchableOpacity
-                disabled={
-                  parseFloat(discount) >
-                    parseFloat(product?.product?.price * quantity) ||
-                  parseFloat(discount) < 0
-                }
-                style={[
-                  styles.addButton,
-                  (parseFloat(discount) >
-                    parseFloat(product?.product?.price * quantity) ||
-                    parseFloat(discount) < 0) && {
-                    opacity: 0.5,
-                  },
-                ]}
-                onPress={() => onAdd(quantity, Number(discount))}>
-                <Text style={styles.addButtonText}>Lägg till</Text>
-              </TouchableOpacity>
-            </View>
-            {/* </KeyboardAvoidingView> */}
-          </TouchableWithoutFeedback>
+                {/* Add Button */}
+                <TouchableOpacity
+                  disabled={
+                    parseFloat(discount) >
+                      parseFloat(product?.product?.price * quantity) ||
+                    parseFloat(discount) < 0
+                  }
+                  style={[
+                    styles.addButton,
+                    (parseFloat(discount) >
+                      parseFloat(product?.product?.price * quantity) ||
+                      parseFloat(discount) < 0) && {
+                      opacity: 0.5,
+                    },
+                  ]}
+                  onPress={() => onAdd(quantity, Number(discount))}>
+                  <Text style={styles.addButtonText}>Lägg till</Text>
+                </TouchableOpacity>
+              </ScrollView>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
         </View>
       </TouchableWithoutFeedback>
     </Modal>
@@ -348,15 +411,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     borderRadius: 40,
+    alignItems: 'center',
     // padding: 20,
-    width: '92%',
+    width: Dimensions.get('screen').width,
   },
   modal: {
     backgroundColor: '#fff',
     borderRadius: 40,
-    width: '92%',
+    alignSelf: 'center',
+    width: Dimensions.get('screen').width * 0.92,
     paddingHorizontal: 25,
     paddingBottom: 17,
     paddingTop: 16,

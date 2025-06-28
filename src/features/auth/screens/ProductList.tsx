@@ -118,7 +118,9 @@ export default function PurchaseScreen(props) {
                 discount: item?.discount,
                 quantity: item?.quantity,
               });
-              setModalVisible(true);
+              setTimeout(() => {
+                setModalVisible(true);
+              }, 100);
             }}>
             <PenIcon />
           </TouchableOpacity>
@@ -194,8 +196,20 @@ export default function PurchaseScreen(props) {
           <Text style={styles.totalValue}>{total} kr</Text>
         </View>
         <View style={styles.totalRow}>
-          <Text style={styles.discountLabel}>Rabatt</Text>
-          <Text style={styles.discountValue}>{totalDiscount} kr</Text>
+          <Text
+            style={[
+              styles.discountLabel,
+              parseFloat(totalDiscount) > 0 && {color: '#E05A2A'},
+            ]}>
+            Rabatt
+          </Text>
+          <Text
+            style={[
+              styles.discountValue,
+              parseFloat(totalDiscount) > 0 && {color: '#E05A2A'},
+            ]}>
+            {totalDiscount} kr
+          </Text>
         </View>
 
         <TouchableOpacity
