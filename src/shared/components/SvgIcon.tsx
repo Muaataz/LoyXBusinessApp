@@ -775,26 +775,6 @@ export const OpenLinkIcon = (props: any) => {
   );
 };
 
-export const LogoutIcon = (props: any) => {
-  return (
-    <Svg
-      width={24}
-      height={25}
-      viewBox="0 0 24 25"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}>
-      <Path
-        d="M18.189 9.5c.986.74 1.878 1.599 2.654 2.556.105.13.157.287.157.444m-2.811 3a14.998 14.998 0 002.654-2.556A.704.704 0 0021 12.5m0 0H8m5-7.472A6 6 0 003 9.5v6a6 6 0 0010 4.472"
-        stroke="#222"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-};
-
 export const DetailInfoIcon = (props: any) => {
   return (
     <Svg
@@ -1281,4 +1261,60 @@ export const RibIcon = (props: any) => (
       strokeLinecap="round"
     />
   </Svg>
+);
+
+export const LoginIcon = (props: any) => (
+  <Svg
+    width={24}
+    height={25}
+    viewBox="0 0 24 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M6 17.5c0 .351 0 .527.016.68a3 3 0 002.286 2.611c.15.036.324.06.672.105l6.592.88c1.876.25 2.814.375 3.542.085a3 3 0 001.509-1.32c.383-.684.383-1.63.383-3.524V7.983c0-1.894 0-2.84-.383-3.524a3 3 0 00-1.509-1.32c-.728-.29-1.666-.165-3.542.086l-6.592.879c-.349.046-.523.07-.672.105A3 3 0 006.016 6.82C6 6.973 6 7.15 6 7.5m6 1l4 4m0 0l-4 4m4-4H3"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+export const LogoutIcon= (props: any) => (
+ <Svg
+      width={25}
+      height={25}
+      viewBox="0 0 25 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M18.491 9.813c.987.74 1.878 1.598 2.654 2.556.105.13.158.287.158.444m-2.812 3a14.998 14.998 0 002.654-2.557.703.703 0 00.158-.444m0 0h-13m5-7.472a6 6 0 00-10 4.472v6a6 6 0 0010 4.473"
+        stroke="#222"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+);
+
+export const CrossInputIcon= (props: any) => (
+  <Svg
+      width={21}
+      height={20}
+      viewBox="0 0 21 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Rect x={0.43457} width={20} height={20} rx={10} fill="#F6F6F6" />
+      <Path
+        d="M7.473 6.898l6.455 6.455M13.928 6.898l-6.455 6.455"
+        stroke="#6A6A6A"
+        strokeWidth={2}
+        strokeLinecap="round"
+      />
+    </Svg>
 );

@@ -10,11 +10,11 @@ type NavigationProp = StackNavigationProp<RootStackParamList, 'Splash'>;
 
 // Create an Axios instance with default configuration
 const apiClient = axios.create({
-  baseURL: process.env.API_BASE_URL, // Replace with your API base URL
+  baseURL: 'https://mobileapidev.loyx.se', // Replace with your API base URL
   timeout: 10000, // Request timeout in milliseconds
   headers: {
     'Content-Type': 'application/json',
-    'x-api-key': process.env.X_API_KEY,
+    'x-api-key': 'X8Ufg6NxiXzKuWhcFwBRP1y-nmlBM7LFTmYOhUAGJ3k',
   },
 });
 

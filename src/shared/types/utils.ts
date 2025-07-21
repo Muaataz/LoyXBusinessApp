@@ -14,6 +14,6 @@ export interface UserDetailsResponse {
 
 export type TCommonData = {
   navigation: any;
-  userData: UserDetailsResponse | null;
+  userData: any;
   bankid_api_env: string;
 };

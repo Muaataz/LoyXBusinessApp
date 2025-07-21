@@ -149,8 +149,8 @@ export default function PurchaseScreen(props) {
           justifyContent: 'space-between',
           alignItems: 'center',
           // borderBottomWidth:1,
-          paddingBottom: RFValue(10, 850),
-          marginBottom: RFValue(15, 850),
+          // paddingBottom: RFValue(10, 850),
+          // marginBottom: RFValue(15, 850),
         }}>
         <Text style={styles.customerName}>{responseUser?.user_name}</Text>
         <TouchableOpacity
@@ -167,7 +167,10 @@ export default function PurchaseScreen(props) {
           <CrossIcon />
         </TouchableOpacity>
       </View>
-      <View style={{paddingHorizontal: 16, flex: 1}}>
+      {!!responseUser?.balanece && (
+        <Text style={styles.pointsTxt}>Poäng: {responseUser?.balanece}</Text>
+      )}
+      <View style={{paddingHorizontal: 16, flex: 1, marginTop: 21}}>
         <Text style={styles.sectionLabel}>Produkt/tjänst</Text>
         <TouchableOpacity
           onPress={() => {
@@ -301,12 +304,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     // marginVertical: 10,
   },
+  pointsTxt: {
+    paddingHorizontal: 16,
+    ...Typography.CustomText,
+    color: '#222',
+    fontSize: RFValue(16, 850),
+    fontWeight: '500',
+    // marginVertical: 10,
+  },
   sectionLabel: {
     ...Typography.CustomText,
     fontWeight: 'bold',
     color: '#222',
     fontSize: RFValue(18, 850),
-    marginTop: RFValue(25, 850),
+    // marginTop: RFValue(25, 850),
     marginBottom: RFValue(15, 850),
   },
   addButton: {

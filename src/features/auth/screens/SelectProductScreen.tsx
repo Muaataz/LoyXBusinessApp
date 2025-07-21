@@ -30,6 +30,7 @@ export type Category = {
   id: string;
   name: string;
   products: Product[];
+  currency?: any;
 };
 
 const catData = [
@@ -105,13 +106,17 @@ export default function SelectProductScreen({navigation, route}: any) {
   };
 
   const searchProductsByName = (data1: any, searchText: string) => {
-    const lowerCaseSearch = searchText.toLowerCase();
+    const lowerSearch = searchText.toLowerCase();
 
     return data1
-      ?.map((item: any) => {
-        const matchedProducts = item.products.filter((product: any) =>
-          product.name.toLowerCase().includes(lowerCaseSearch),
-        );
+      .map((item: any) => {
+        const categoryMatch = item.name.toLowerCase().includes(lowerSearch);
+
+        const matchedProducts = categoryMatch
+          ? item.products // if category matched, return all products
+          : item.products.filter((product: any) =>
+              product.name.toLowerCase().includes(lowerSearch),
+            );
 
         if (matchedProducts.length > 0) {
           return {
@@ -122,7 +127,7 @@ export default function SelectProductScreen({navigation, route}: any) {
 
         return null;
       })
-      .filter(Boolean); // remove nulls
+      .filter(Boolean);
   };
 
   const getData = async () => {
@@ -238,16 +243,19 @@ export default function SelectProductScreen({navigation, route}: any) {
               </TouchableOpacity>
 
               {(expandedCategoryId === item.id || !!search) &&
-                item.products.map(product => (
+                item.products.map((product: any) => (
                   <TouchableOpacity
                     key={product.id}
                     disabled={
-                      productList?.findIndex(itm => itm?.id == product.id) != -1
+                      productList?.findIndex(
+                        (itm: any) => itm?.id == product.id,
+                      ) != -1
                     }
                     style={[
                       styles.productItem,
-                      productList?.findIndex(itm => itm?.id == product.id) !=
-                        -1 && {
+                      productList?.findIndex(
+                        (itm: any) => itm?.id == product.id,
+                      ) != -1 && {
                         opacity: 0.5,
                       },
                     ]}
@@ -265,8 +273,9 @@ export default function SelectProductScreen({navigation, route}: any) {
                         // selectedProductId === product.id &&
                         //   styles.selectedRadio,
                       ]}>
-                      {productList?.findIndex(itm => itm?.id == product.id) !=
-                        -1 && (
+                      {productList?.findIndex(
+                        (itm: any) => itm?.id == product.id,
+                      ) != -1 && (
                         <View
                           style={{
                             backgroundColor: '#222',
@@ -289,9 +298,9 @@ export default function SelectProductScreen({navigation, route}: any) {
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
           onAdd={(qty, discount) => {
-            setProductList(prevList => {
+            setProductList((prevList: any) => {
               const existingIndex = prevList.findIndex(
-                item => item.id === selectedProductId.product.id,
+                (item: any) => item.id === selectedProductId.product.id,
               );
 
               const updatedItem = {

@@ -71,6 +71,11 @@ const ScanBrandQR = ({navigation}: any) => {
   //     }, 2000);
   //   }, []);
 
+
+  const [scannedCode, setScannedCode] = useState<string | null>(
+    __DEV__ ? '17f4710b-83af-4aa2-b388-beefcd0d3df8' : null,
+  );
+
   useEffect(() => {
     if (scannedCode) {
       doTransaction(scannedCode);
@@ -104,9 +109,6 @@ const ScanBrandQR = ({navigation}: any) => {
     }
   };
 
-  const [scannedCode, setScannedCode] = useState<string | null>(
-    __DEV__ ? '8c2c8e62-7f59-4e9e-bfc4-78a63150a3be' : null,
-  );
 
   // console.log('scannedCode - ',scannedCode);
 

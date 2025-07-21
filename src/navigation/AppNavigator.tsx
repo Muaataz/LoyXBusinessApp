@@ -11,6 +11,10 @@ import QrDataTransaction from '../features/auth/screens/QrDataTransaction';
 import NoWifi from '../shared/components/NoWifi';
 import PurchaseScreen from '../features/auth/screens/ProductList';
 import SelectProductScreen from '../features/auth/screens/SelectProductScreen';
+import LoginScreen from '../features/auth/screens/LoginScreen';
+import PhoneScreen from '../features/auth/screens/PhoneScreen';
+import PhoneVerificationScreen from '../features/auth/screens/PhoneVerificationScreen';
+import LandingScreen from '../features/auth/screens/LandingScreen';
 
 const easeOutExpo = (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
@@ -36,23 +40,46 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <View style={{flex: 1}}>
-        <Stack.Navigator screenOptions={screenOption} initialRouteName="Splash">
+        <Stack.Navigator
+          screenOptions={screenOption}
+          initialRouteName="LandingScreen">
+          <Stack.Screen
+            name="Phone"
+            component={PhoneScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="PhoneVerification"
+            component={PhoneVerificationScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="LandingScreen"
+            component={LandingScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name="Splash"
             component={SplashScreen}
             options={{headerShown: false}}
           />
+
           <Stack.Screen
             name="ScanBrandQR"
             component={ScanBrandQR}
             options={{headerShown: false}}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="PurchaseScreen"
             component={PurchaseScreen}
             options={{headerShown: false}}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="SelectProductScreen"
             component={SelectProductScreen}
             options={{headerShown: false}}
