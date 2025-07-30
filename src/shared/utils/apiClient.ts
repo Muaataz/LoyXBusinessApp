@@ -14,7 +14,7 @@ const apiClient = axios.create({
   timeout: 10000, // Request timeout in milliseconds
   headers: {
     'Content-Type': 'application/json',
-    'x-api-key': 'X8Ufg6NxiXzKuWhcFwBRP1y-nmlBM7LFTmYOhUAGJ3k',
+  'x-api-key': 'X8Ufg6NxiXzKuWhcFwBRP1y-nmlBM7LFTmYOhUAGJ3k',
   },
 });
 

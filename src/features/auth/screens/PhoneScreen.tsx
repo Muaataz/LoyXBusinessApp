@@ -102,7 +102,7 @@ export default function PhoneScreen({navigation}: any) {
     if (isValidPhone(phone)) {
       setLoader(true);
       const response: SendCodeVerifyResponse = await sendCodeToVerify(
-        `${__DEV__ ? '+91' : '+46'}${phone}`,
+        `${'+46'}${phone}`,
       );
       setLoader(false);
       if (response?.user_id) {

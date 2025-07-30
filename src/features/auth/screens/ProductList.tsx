@@ -167,9 +167,9 @@ export default function PurchaseScreen(props) {
           <CrossIcon />
         </TouchableOpacity>
       </View>
-      {!!responseUser?.balanece && (
-        <Text style={styles.pointsTxt}>Poäng: {responseUser?.balanece}</Text>
-      )}
+      
+        <Text style={styles.pointsTxt}>Poäng: {responseUser?.balance || 0}</Text>
+  
       <View style={{paddingHorizontal: 16, flex: 1, marginTop: 21}}>
         <Text style={styles.sectionLabel}>Produkt/tjänst</Text>
         <TouchableOpacity
